@@ -1,3 +1,4 @@
+<?php require_once 'config.php'; ?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -5,59 +6,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แบบประเมินความพึงพอใจ</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/modern.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body { background-color: #f8f9fa; }
-        .container { max-width: 600px; margin-top: 50px; }
-        .card { border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 5px solid #0dcaf0; }
-        .footer { margin-top: 50px; text-align: center; color: #6c757d; font-size: 0.9em; }
-        .rating-group { display: flex; justify-content: space-between; max-width: 300px; margin: 0 auto; }
-        .rating-group input[type="radio"] { transform: scale(1.5); }
+        body {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            min-height: 100vh;
+        }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="card">
-            <div class="card-body p-5">
-                <h2 class="text-center mb-4">แบบประเมินความพึงพอใจ</h2>
-                <p class="text-center text-muted mb-4">กรุณาทำแบบประเมินเพื่อรับ E-Certificate</p>
+<body class="d-flex align-items-center justify-content-center py-5">
+    <div class="container px-4" style="max-width: 600px;">
+        <div class="glass-panel p-5 animate-fade-up">
+            <div class="text-center mb-4">
+                <span class="fs-1">📝</span>
+                <h2 class="fw-bold mt-2">แบบประเมินความพึงพอใจ</h2>
+                <p class="text-muted">กรุณาทำแบบประเมินเพื่อรับ E-Certificate ของคุณ</p>
+            </div>
+
+            <form action="feedback_process.php" method="POST">
+                <div class="form-floating mb-4">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                    <label for="email">อีเมลที่ใช้ลงทะเบียน</label>
+                </div>
                 
-                <?php if (isset($_GET['status']) && $_GET['status'] == 'error'): ?>
-                    <div class="alert alert-danger">เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง</div>
-                <?php elseif (isset($_GET['status']) && $_GET['status'] == 'exists'): ?>
-                    <div class="alert alert-warning">ท่านได้ทำแบบประเมินไปแล้ว <a href="cert.php?email=<?php echo urlencode($_GET['email'] ?? ''); ?>" class="alert-link">คลิกที่นี่เพื่อรับ E-Cert</a></div>
-                <?php elseif (isset($_GET['status']) && $_GET['status'] == 'notfound'): ?>
-                    <div class="alert alert-danger">ไม่พบประวัติการลงทะเบียนของอีเมลนี้ในระบบ</div>
-                <?php endif; ?>
-
-                <form action="feedback_process.php" method="POST">
-                    <div class="mb-4">
-                        <label for="email" class="form-label fw-bold">อีเมลที่ใช้ลงทะเบียน</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                <div class="mb-4 text-center">
+                    <label class="form-label fw-bold d-block mb-2">ความพึงพอใจโดยรวม</label>
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="rating" value="5" required/><label for="star5" title="5 stars">★</label>
+                        <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars">★</label>
+                        <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars">★</label>
+                        <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars">★</label>
+                        <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star">★</label>
                     </div>
-                    
-                    <div class="mb-4 text-center">
-                        <label class="form-label fw-bold d-block mb-3">ความพึงพอใจโดยรวม (1 = น้อยสุด, 5 = มากสุด)</label>
-                        <div class="rating-group">
-                            <label><input type="radio" name="rating" value="1" required> <br>1</label>
-                            <label><input type="radio" name="rating" value="2"> <br>2</label>
-                            <label><input type="radio" name="rating" value="3"> <br>3</label>
-                            <label><input type="radio" name="rating" value="4"> <br>4</label>
-                            <label><input type="radio" name="rating" value="5"> <br>5</label>
-                        </div>
-                    </div>
+                </div>
 
-                    <div class="mb-4">
-                        <label for="comment" class="form-label fw-bold">ข้อเสนอแนะเพิ่มเติม</label>
-                        <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
-                    </div>
+                <div class="form-floating mb-5">
+                    <textarea class="form-control" id="comment" name="comment" placeholder="ข้อเสนอแนะเพิ่มเติม" style="height: 120px"></textarea>
+                    <label for="comment">ข้อเสนอแนะเพิ่มเติม (ถ้ามี)</label>
+                </div>
 
-                    <button type="submit" class="btn btn-info text-white w-100 py-2">ส่งแบบประเมินและรับ E-Cert</button>
-                </form>
+                <button type="submit" class="btn-modern w-100 py-3" style="background: linear-gradient(135deg, #10b981, #059669);">ส่งแบบประเมินและรับ E-Cert</button>
+            </form>
+            
+            <div class="mt-4 text-center text-muted small">
+                <?php echo FOOTER_CREDIT; ?>
             </div>
         </div>
-        <div class="footer">
-            <?php include 'config.php'; echo FOOTER_CREDIT; ?>
-        </div>
     </div>
+
+    <?php if (isset($_GET['status'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            <?php if ($_GET['status'] == 'exists'): ?>
+                Swal.fire({
+                    icon: 'info',
+                    title: 'ท่านประเมินไปแล้ว',
+                    text: 'ระบบกำลังพาท่านไปหน้าดาวน์โหลด E-Cert',
+                    confirmButtonColor: 'var(--primary-color)',
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.href = 'cert.php?email=<?php echo urlencode($_GET['email'] ?? ''); ?>';
+                });
+            <?php elseif ($_GET['status'] == 'notfound'): ?>
+                Swal.fire({ icon: 'warning', title: 'ไม่พบข้อมูล', text: 'ไม่พบประวัติการลงทะเบียนของอีเมลนี้', confirmButtonColor: '#f59e0b' });
+            <?php elseif ($_GET['status'] == 'error'): ?>
+                Swal.fire({ icon: 'error', title: 'ข้อผิดพลาด', text: 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง', confirmButtonColor: '#ef4444' });
+            <?php endif; ?>
+            <?php if($_GET['status'] !== 'exists'): ?>
+            window.history.replaceState({}, document.title, "feedback.php");
+            <?php endif; ?>
+        });
+    </script>
+    <?php endif; ?>
 </body>
 </html>
