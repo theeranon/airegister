@@ -63,7 +63,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 // Fetch Data for Report
 try {
     $sql = "
-        SELECT r.id, r.name, r.email, r.phone, r.created_at AS registered_at,
+        SELECT r.id, r.name, r.email, r.phone, r.attendance_type, r.created_at AS registered_at,
                c.checked_in_at, f.rating, f.comment, f.submitted_at AS feedback_submitted_at
         FROM registrations r
         LEFT JOIN checkins c ON r.email = c.email
@@ -146,6 +146,7 @@ try {
                         <th>ชื่อ-นามสกุล</th>
                         <th>อีเมล</th>
                         <th>เบอร์โทร</th>
+                        <th>รูปแบบ</th>
                         <th>ลงทะเบียนเมื่อ</th>
                         <th>เช็คอิน</th>
                         <th>คะแนน</th>
@@ -159,6 +160,13 @@ try {
                         <td class="fw-medium"><?php echo htmlspecialchars($row['name']); ?></td>
                         <td><?php echo htmlspecialchars($row['email']); ?></td>
                         <td><?php echo htmlspecialchars($row['phone'] ?? '-'); ?></td>
+                        <td>
+                            <?php if ($row['attendance_type'] == 'Virtual'): ?>
+                                <span class="badge bg-info bg-opacity-10 text-info border border-info rounded-pill px-2">Virtual</span>
+                            <?php else: ?>
+                                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary rounded-pill px-2">Onsite</span>
+                            <?php endif; ?>
+                        </td>
                         <td class="small text-muted"><?php echo $row['registered_at']; ?></td>
                         <td>
                             <?php if ($row['checked_in_at']): ?>

@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS `registrations` (
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `phone` varchar(50) DEFAULT NULL,
+  `attendance_type` varchar(50) NOT NULL DEFAULT 'Onsite',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)

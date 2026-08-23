@@ -48,6 +48,26 @@
                         <input type="tel" class="form-control" id="phone" name="phone" placeholder="เบอร์โทรศัพท์">
                         <label for="phone">เบอร์โทรศัพท์ (ไม่บังคับ)</label>
                     </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-muted mb-3 d-block">รูปแบบการเข้าร่วมงาน</label>
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" name="attendance_type" id="onsite" value="Onsite" checked>
+                                <label class="btn btn-outline-primary w-100 py-3 rounded-4" for="onsite">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-geo-alt-fill mb-2 d-block mx-auto" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/></svg>
+                                    Onsite (หน้างาน)
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" name="attendance_type" id="virtual" value="Virtual">
+                                <label class="btn btn-outline-info w-100 py-3 rounded-4" for="virtual">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-laptop mb-2 d-block mx-auto" viewBox="0 0 16 16"><path d="M13.5 3a.5.5 0 0 1 .5.5V11H2V3.5a.5.5 0 0 1 .5-.5zm-11-1A1.5 1.5 0 0 0 1 3.5V12h14V3.5A1.5 1.5 0 0 0 13.5 2zM0 12.5h16a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5"/></svg>
+                                    Virtual (ออนไลน์)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     
                     <button type="submit" class="btn-modern w-100 mb-4">ยืนยันการลงทะเบียน</button>
                 </form>
